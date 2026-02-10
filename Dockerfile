@@ -1,10 +1,15 @@
-FROM node:20-alpine
+# Dockerfile per Stremio Proxy
+FROM node:18-alpine
 WORKDIR /app
 
-# Crea server.js completo inline
-RUN echo "const express = require('express'); const app = express(); app.use((req, res, next) => { res.header('Access-Control-Allow-Origin', '*'); next(); }); app.get('/manifest.json', (req, res) => res.json({ id: 'community.proxy', version: '1.0.0', name: 'Proxy', description: 'Stremio Proxy', resources: ['stream'], types: ['movie', 'series'] })); app.get('/stream/:type/:id/:extra?.json', (req, res) => res.json({ streams: [{ title: 'Test', url: 'http://example.com/video.mp4' }] })); app.get('/', (req, res) => res.send('Proxy OK')); app.listen(8080, '0.0.0.0'); console.log('Proxy ready');" > server.js
+# Copia file e installa dipendenze
+COPY package.json package-lock.json ./
+RUN npm ci --only=production
 
-RUN npm init -y && npm install express
+# Copia il codice
+COPY server.js ./
 
+# Esponi porta e avvia
 EXPOSE 8080
+USER node
 CMD ["node", "server.js"]
