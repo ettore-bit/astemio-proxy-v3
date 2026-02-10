@@ -1,0 +1,16 @@
+{
+  "name": "astemio-proxy-v3",
+  "version": "1.0.0",
+  "description": "Proxy Stremio per Koyeb",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"No tests specified\""
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
